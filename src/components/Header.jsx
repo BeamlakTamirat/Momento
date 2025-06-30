@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { LogIn, LogOut, Sun, Moon } from 'lucide-react';
+import { LogIn, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { signOut } from 'firebase/auth';
 import { auth as firebaseAuth } from '../lib/firebase';
+import abcLogo from '../assets/abc.png';
 
-export default function Header({ theme, onThemeToggle }) {
+export default function Header() {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -22,10 +23,15 @@ export default function Header({ theme, onThemeToggle }) {
   return (
     <motion.header initial={{ y: -100 }} animate={{ y: 0 }} className="absolute top-0 left-0 right-0 z-20">
       <div className="container mx-auto flex justify-between items-center p-6">
-        <Link to="/" className="text-2xl font-bold text-gray-800 dark:text-[#e0e0e0]">Momento</Link>
+        <Link to="/" className="flex items-center space-x-3 group">
+          <img src={abcLogo} alt="Momento Logo" className="h-10 w-10 object-contain" />
+          <span className="text-3xl font-extrabold tracking-tight text-gray-800 dark:text-[#e0e0e0] group-hover:text-blue-600" style={{ fontFamily: 'Poppins, Montserrat, Raleway, sans-serif', letterSpacing: '0.04em' }}>
+            Momento
+          </span>
+        </Link>
         <div className="flex items-center space-x-6">
           <Link to="/" className="text-gray-500 dark:text-[#a0a0a0] hover:text-gray-900 dark:hover:text-white transition-colors">Discover</Link>
-          <button onClick={onThemeToggle} className="p-2 rounded-full text-gray-500 dark:text-[#a0a0a0] hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-[#2a2a2a] transition-colors">{theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}</button>
+          <Link to="/explore-map" className="text-gray-500 dark:text-[#a0a0a0] hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Explore Map</Link>
           {currentUser ? (
              <div className="flex items-center space-x-4">
                <Link to="/dashboard" className="text-gray-500 dark:text-[#a0a0a0] hover:text-gray-900 dark:hover:text-white transition-colors">Dashboard</Link>
