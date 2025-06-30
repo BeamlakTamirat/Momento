@@ -1,53 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import TripCard from '../components/TripCard';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../lib/firebase';
-import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
-
+import { collection, query, onSnapshot } from 'firebase/firestore';
+import TripCard from '../components/TripCard';
+import AuthPage from './AuthPage';
 
 export default function HomePage() {
   const { currentUser } = useAuth();
   const [featuredTrips, setFeaturedTrips] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showAuth, setShowAuth] = useState(false);
+  const navigate = useNavigate();
   
   useEffect(() => {
-    
-    const q = query(collection(db, "trips"), orderBy("createdAt", "desc"), limit(4));
+    const q = query(collection(db, 'trips'));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const trips = [];
+      const allTrips = [];
       querySnapshot.forEach((doc) => {
-        trips.push({ id: doc.id, ...doc.data() });
+        allTrips.push({ id: doc.id, ...doc.data() });
       });
-      setFeaturedTrips(trips);
+      const publicTrips = allTrips.filter(trip => trip.isPublic === true && trip.imageUrl);
+      publicTrips.sort((a, b) => {
+        const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+        const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt);
+        return dateB - dateA;
+      });
+      setFeaturedTrips(publicTrips);
+      setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } };
-  const itemVariants = { hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } };
+  const handleCardClick = (tripId) => {
+    if (!currentUser) {
+      setShowAuth(true);
+    } else {
+      navigate(`/trip/${tripId}`);
+    }
+  };
 
   return (
-    <main className="container mx-auto px-6 pt-32 pb-16">
-      <motion.section initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center mb-20">
-        <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter mb-6 bg-clip-text text-gray-200 bg-gradient-to-br from-gray-700 to-gray-900 dark:from-blue-300 dark:to-[#00aaff]">Immortalize Your Journeys.</h1>
-        <p className="text-xl text-gray-600 dark:text-[#a0a0a0] max-w-3xl mx-auto">The modern digital journal for travelers. Document your adventures, preserve your memories, and tell your story.</p>
-        <Link to={currentUser ? "/dashboard" : "/auth"}>
-          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="mt-10 flex items-center justify-center mx-auto space-x-2 bg-[#00aaff] text-white font-bold text-lg py-3 px-8 rounded-full shadow-lg shadow-blue-500/30 hover:bg-blue-500 transition-colors">
-            <span>Start Your First Journal</span><ArrowRight size={22} />
-          </motion.button>
-        </Link>
-      </motion.section>
-      <section>
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-[#e0e0e0] mb-8">Featured Journals</h2>
-        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {featuredTrips.map(trip => (
-            <motion.div key={trip.id} variants={itemVariants}><TripCard trip={trip} /></motion.div>
-          ))}
-        </motion.div>
-      </section>
-    </main>
+    <div className="relative min-h-screen overflow-x-hidden">
+      <div className="fixed inset-0 -z-10 animate-gradient-move bg-gradient-to-br from-blue-900 via-purple-900 to-pink-700 opacity-90" style={{backgroundSize:'200% 200%', animation:'gradientMove 12s ease-in-out infinite'}} />
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute left-1/4 top-1/4 w-96 h-96 bg-pink-400 opacity-30 rounded-full blur-3xl animate-blob1" />
+        <div className="absolute right-1/4 bottom-1/4 w-96 h-96 bg-blue-400 opacity-30 rounded-full blur-3xl animate-blob2" />
+      </div>
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4 pb-12">
+        {showAuth && (
+          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full relative">
+              <button onClick={() => setShowAuth(false)} className="absolute top-2 right-4 text-2xl font-bold">×</button>
+              <AuthPage />
+            </div>
+          </div>
+        )}
+        <div className="w-full max-w-3xl mx-auto text-center mt-24 mb-12">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">Immortalize Your Journey</h1>
+          <p className="text-lg md:text-xl text-gray-300 mb-4">The modern digital journal for travelers. Document your adventures, preserve your memories, and tell your story to the world.</p>
+          <p className="text-base text-gray-400">Share your adventures, discover new places, and connect with a global community of explorers.</p>
+        </div>
+        <div className="w-full max-w-6xl mx-auto mt-8">
+        {loading ? (
+            <div className="text-white text-center py-32 text-xl">Loading public photos...</div>
+          ) : featuredTrips.length === 0 ? (
+            <div className="text-gray-400 text-center py-32 text-xl">No public photos yet.</div>
+        ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-4"
+            >
+            {featuredTrips.map(trip => (
+                <div key={trip.id} onClick={() => handleCardClick(trip.id)} className="cursor-pointer">
+                  <TripCard trip={trip} />
+                </div>
+            ))}
+          </motion.div>
+        )}
+        </div>
+      </div>
+    </div>
   );
 }
