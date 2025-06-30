@@ -1,1 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap');
 @import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animated gradient keyframes */
+@keyframes gradientMove {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient-move {
+  animation: gradientMove 12s ease-in-out infinite;
+}
+
+/* Floating blob keyframes */
+@keyframes blob1 {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-40px) scale(1.1); }
+}
+@keyframes blob2 {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(40px) scale(0.95); }
+}
+.animate-blob1 {
+  animation: blob1 8s ease-in-out infinite;
+}
+.animate-blob2 {
+  animation: blob2 10s ease-in-out infinite;
+}
