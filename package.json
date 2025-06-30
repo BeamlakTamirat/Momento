@@ -15,9 +15,13 @@
     "@tailwindcss/vite": "^4.1.10",
     "firebase": "^11.9.1",
     "framer-motion": "^12.18.1",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.522.0",
+    "mapbox-gl": "^2.15.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-leaflet": "^5.0.0",
+    "react-leaflet-cluster": "^2.1.0",
     "react-router-dom": "^7.6.2",
     "tailwindcss": "^4.1.10"
   },
