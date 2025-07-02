@@ -8,7 +8,7 @@
 
 > **Immortalize Your Journey** - A modern, full-stack travel journal application that lets you document adventures, preserve memories, and share your stories with the world.
 
-![Momento App Preview](https://via.placeholder.com/800x400/1F2937/FFFFFF?text=Momento+Travel+Journal)
+![Momento App Preview](https://github.com/BeamlakTamirat/Momento/blob/55c34ce4df67ae422374c3889d3ba5a08f6c1f95/momento.png)
 
 ## ✨ Features
 
@@ -55,7 +55,7 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/momento.git
+   git clone https://github.com/BeamlakTamirat/Momento.git
    cd momento
    ```
 
@@ -155,7 +155,6 @@ Create rich travel journals with:
 ### User Experience
 Modern, intuitive interface with:
 
-- **Dark/Light Themes**: Seamless theme switching
 - **Smooth Animations**: Framer Motion powered interactions
 - **Responsive Design**: Perfect on all devices
 - **Loading States**: Beautiful loading indicators
@@ -175,37 +174,11 @@ Modern, intuitive interface with:
 3. Configure environment variables
 4. Set up image transformations (optional)
 
-## 📊 Performance Optimizations
 
-- **Image Optimization**: Cloudinary automatic optimization
-- **Lazy Loading**: Components and images loaded on demand
-- **Code Splitting**: Route-based code splitting
-- **Caching**: Firebase offline support
-- **Bundle Optimization**: Vite's efficient bundling
-
-## 🚀 Deployment
-
-### Firebase Hosting
-```bash
-npm run build
-firebase deploy
-```
-
-### Vercel
-```bash
-npm run build
-vercel --prod
-```
-
-### Netlify
-```bash
-npm run build
-# Deploy dist folder
-```
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+I am welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -213,25 +186,7 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **React Team** - For the amazing framework
-- **Vite Team** - For the lightning-fast build tool
-- **Firebase Team** - For the powerful backend services
-- **Tailwind CSS Team** - For the utility-first CSS framework
-- **Framer Motion Team** - For the beautiful animations
-
-## 📞 Support
-
-- **Documentation**: [Wiki](https://github.com/yourusername/momento/wiki)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/momento/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/momento/discussions)
-
----
 
 <div align="center">
   <p>Made with ❤️ by Beamlak</p>
